@@ -20,8 +20,6 @@ dht11 DHT11;
 ModbusSerial mb;
 DallasTemperature sensors(&oneWire);
 
-//time variable
-long ts;
 
 void setup(void)
 {
@@ -36,18 +34,14 @@ void setup(void)
   // Registers
   mb.addIreg(HUM);
   mb.addIreg(TEMP1);
-  mb.addIreg(TEMP2);
+  //mb.addIreg(TEMP2);
 
-  ts = millis();
 }
 
 void loop(void)
 { 
-  // Call once inside loop() - all magic here
-  mb.task();
-
-  //Read each two seconds
-   if (millis() > ts + 2000) {
+    // Call once inside loop() - all magic here
+    mb.task();
 
     // temperature read
     sensors.requestTemperatures(); // Send the command to get temperatures
@@ -60,10 +54,10 @@ void loop(void)
     mb.Ireg(TEMP1, temp1);
 
     //humidity read
-    int humidity = DHT11.read(DHT11PIN);
-    
+    int chk = DHT11.read(DHT11PIN);
+    float humidity = (float)DHT11.humidity;
+
     //Sending to scadaBr the value of humidity
     mb.Ireg(HUM, humidity);
 
-  }
 }
