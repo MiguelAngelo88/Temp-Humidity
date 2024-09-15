@@ -27,7 +27,7 @@ DallasTemperature sensors(&oneWire);
 float temp1_filtered = 0;
 float temp2_filtered = 0;
 float hum_filtered = 0;
-const float alpha = 0.1; // Filter factor for exponential moving average
+const float alpha = 0.5; // Filter factor for exponential moving average
 
 void setup(void)
 {
