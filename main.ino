@@ -61,5 +61,4 @@ void loop(void)
 
     //Sending to scadaBr the value of humidity
     mb.Ireg(HUM, humidity);
-
 }
