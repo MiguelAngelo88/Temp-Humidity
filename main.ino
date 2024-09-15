@@ -6,7 +6,7 @@
 #include <ModbusSerial.h>
 
 // Mapping the pins
-#define ONE_WIRE_BUS 2
+#define ONE_WIRE_BUS 5
 #define DHT11PIN 7
 
 // Modbus Registers Offsets
@@ -15,9 +15,9 @@
 #define TEMP2 2
 
 //objects declaration
+ModbusSerial mb;
 OneWire oneWire(ONE_WIRE_BUS);
 dht11 DHT11;
-ModbusSerial mb;
 DallasTemperature sensors(&oneWire);
 
 
@@ -34,7 +34,7 @@ void setup(void)
   // Registers
   mb.addIreg(HUM);
   mb.addIreg(TEMP1);
-  //mb.addIreg(TEMP2);
+  mb.addIreg(TEMP2);
 
 }
 
@@ -49,9 +49,11 @@ void loop(void)
     // After we got the temperatures, we can print them here.
     // We use the function ByIndex, and as an example get the temperature from the first sensor only.
     float temp1 = sensors.getTempCByIndex(0);
+    float temp2 = sensors.getTempCByIndex(1);
 
     //Sending to scadaBr the value of temp1
     mb.Ireg(TEMP1, temp1);
+    mb.Ireg(TEMP2, temp2);
 
     //humidity read
     int chk = DHT11.read(DHT11PIN);
