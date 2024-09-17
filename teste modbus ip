@@ -1,0 +1,40 @@
+#include <ModbusIP_ESP8266.h>
+
+//Modbus Registers Offsets
+const int BUTTOM_COIL = 100;
+//Used Pins
+const int buttom = 0; //GPIO0
+
+//ModbusIP object
+ModbusIP mb;
+
+
+void setup() {
+  Serial.begin(115200);
+
+  WiFi.begin("IFPB-AUTO2", "");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  mb.server();
+
+  pinMode(buttom, OUTPUT);
+  mb.addCoil(BUTTOM_COIL); 
+}
+
+void loop() {
+
+  mb.task();
+
+  mb.Coil(BUTTOM_COIL);
+
+  delay(10);
+}
